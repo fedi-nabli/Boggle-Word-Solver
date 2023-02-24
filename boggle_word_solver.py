@@ -22,6 +22,24 @@ class Tree():
       return None
     return self.children[letter]
 
+# function for the actual word solver
+def find_word(board, tree: Tree, validated, row, col, path=None, curr_letter=None, word=None):
+  letter = board[row][col]
+  if path is None or curr_letter is None or word is None:
+    letter = tree.search(letter)
+    path = [(row, col)]
+    word = letter
+  else:
+    curr_letter = curr_letter.search(letter)
+    path.append((row, col))
+    word = word + letter
+
+  # base cases
+  if curr_letter is None:
+    return
+  if curr_letter.leaf:
+    validated.add(word)
+
 def main():
   # Initialise game board based on user input
   board = []
