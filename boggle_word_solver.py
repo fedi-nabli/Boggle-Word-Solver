@@ -1,9 +1,26 @@
 class Tree():
-  def __init__(self):
-    return
+  def __init__(self, letter=None):
+    self.letter = letter
+    self.children = {}
+    self.leaf = False
   
+  # add a word, letter by letter
   def add(self, word):
-    return
+    if len(word):
+      letter = word[0]
+      word = word[1:]
+      if letter not in self.children:
+        self.children[letter] = Tree(letter)
+      return self.children[letter].add(word)
+    else:
+      leaf = True
+      return self
+    
+  # locate a letter in the tree
+  def search(self, letter):
+    if letter not in self.children:
+      return None
+    return self.children[letter]
 
 def main():
   # Initialise game board based on user input
