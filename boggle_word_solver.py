@@ -23,7 +23,7 @@ class Tree():
     return self.children[letter]
 
 # function for the actual word solver
-def find_word(board, tree: Tree, validated, row, col, path=None, curr_letter=None, word=None):
+def find_words(board, tree: Tree, validated, row, col, path=None, curr_letter=None, word=None):
   letter = board[row][col]
   if path is None or curr_letter is None or word is None:
     letter = tree.search(letter)
@@ -39,6 +39,12 @@ def find_word(board, tree: Tree, validated, row, col, path=None, curr_letter=Non
     return
   if curr_letter.leaf:
     validated.add(word)
+
+  # recussive call
+  for r in range(row-1, row+2):
+    for c in range(col-1, col+2):
+      if (r >= 0 and r < 4 and c >= 0 and c < 4 and r != row and c != col and (r, c) not in path):
+        find_words(board, tree, validated, r, c, path[:], curr_letter, word[:])
 
 def main():
   # Initialise game board based on user input
@@ -56,7 +62,7 @@ def main():
     print()
   
   # load dictianry
-  dict = open("dictinary-yawl.txt", "r")
+  dict = open("dictionary-yawl.txt", "r")
 
   tree = Tree()
   for line in dict:
